@@ -1,0 +1,48 @@
+/* E:\LAS_FUTBOL25\tribunal_frontend_react\src\App.css */
+
+.estado-cumplido {
+  color: green;
+  font-weight: bold;
+}
+
+.estado-sancionado {
+  color: red;
+  font-weight: bold;
+}
+
+.estado-provisorio {
+  color: orange;
+  font-weight: bold;
+}
+
+/* Estilos para impresión - ya los tienes en handlePrint, pero si quieres estilos globales: */
+/*
+@media print {
+    .no-print {
+        display: none !important;
+    }
+    body {
+        margin: 0;
+        padding: 0;
+    }
+    @page {
+        size: A4;
+        margin: 20mm;
+    }
+    h1, h2, h3 {
+        text-align: center;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    th, td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+    }
+    .page-break {
+        page-break-before: always;
+    }
+}
+*/

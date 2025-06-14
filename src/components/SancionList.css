@@ -1,0 +1,79 @@
+/* Estilos para SancionList.css */
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+th, td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+tr:nth-child(even) {
+  background-color: #f9f9f9;
+}
+
+.btn-add {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+
+.btn-add:hover {
+  background-color: #0056b3;
+}
+
+/* Clases para los estados de la sanción */
+.estado-cumplido {
+  color: green;
+  font-weight: bold;
+}
+
+.estado-sancionado {
+  color: red;
+  font-weight: bold;
+}
+
+.estado-provisorio {
+    color: orange; /* O el color que prefieras para provisorio */
+    font-weight: bold;
+}
+
+/* Estilos para la alerta */
+.alert-container {
+  background-color: #fff3cd; /* Amarillo claro */
+  border: 1px solid #ffeeba;
+  border-radius: 5px;
+  padding: 15px;
+  margin-bottom: 20px;
+  color: #856404; /* Texto amarillo oscuro */
+}
+
+.alert-container h3 {
+    margin-top: 0;
+    color: #856404;
+}
+
+.alert-container ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.alert-container li {
+    margin-bottom: 5px;
+    padding-left: 10px;
+    border-left: 3px solid #ffc107;
+}
