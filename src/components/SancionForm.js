@@ -83,7 +83,7 @@ function SancionForm() {
         try {
             const jugadoresRes = await axios.get('http://127.0.0.1:8000/api/jugadores/');
             setJugadores(jugadoresRes.data);
-            const resolucionesRes = await axios.get('http://127.0.0.1:8000/api/resoluciones/');
+            const resolucionesRes = await axios.get(API_ENDPOINTS.resoluciones);
             setResoluciones(resolucionesRes.data);
         } catch (error) {
             console.error("Error al cargar datos iniciales:", error);
