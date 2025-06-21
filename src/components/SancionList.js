@@ -14,6 +14,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import AddIcon from '@mui/icons-material/Add';
 import PrintIcon from '@mui/icons-material/Print'; // Importa el icono de imprimir
+import { API_ENDPOINTS } from '../config/api';
 
 function SancionList() {
     const [sanciones, setSanciones] = useState([]);
@@ -31,7 +32,7 @@ function SancionList() {
         setLoading(true);
         setError(null);
         try {
-            const response = await axios.get('http://127.00.1:8000/api/sanciones/');
+            const response = await axios.get(API_ENDPOINTS.sanciones);
             const fetchedSanciones = response.data;
 
             // Calcular el estado de las sanciones (cumplida, activa, pendiente, etc.)
@@ -88,7 +89,7 @@ function SancionList() {
     const handleDelete = async (id) => {
         if (window.confirm("¿Estás seguro de que quieres eliminar esta sanción?")) {
             try {
-                await axios.delete(`http://127.0.0.1:8000/api/sanciones/${id}/`);
+                await axios.delete(API_ENDPOINTS.sancionesDetail(id));
                 alert("Sanción eliminada con éxito!");
                 fetchSancionesAndCategories(); // Recargar la lista y categorías
             } catch (error) {

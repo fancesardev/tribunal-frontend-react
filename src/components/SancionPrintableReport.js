@@ -8,6 +8,7 @@ import {
     TableCell, TableContainer, TableHead, TableRow, Container,
     CircularProgress, Button
 } from '@mui/material';
+import { API_ENDPOINTS } from '../config/api';
 
 const printStyles = `
   @page {
@@ -58,7 +59,7 @@ function SancionPrintableReport() {
             setError(null);
             setContentReady(false); 
             try {
-                const response = await axios.get('http://127.0.0.1:8000/api/sanciones/');
+                const response = await axios.get(API_ENDPOINTS.sanciones);
                 let filteredData = response.data;
 
                 if (category && category !== 'todas') {

@@ -11,6 +11,8 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
+import { API_ENDPOINTS } from '../config/api';
+
 function SancionForm() {
     const { id } = useParams();
     const navigate = useNavigate();
@@ -162,10 +164,10 @@ function SancionForm() {
         try {
             let response;
             if (id) {
-                response = await axios.patch(`http://127.0.0.1:8000/api/sanciones/${id}/`, dataToSend);
+                response = await axios.patch(API_ENDPOINTS.sancionesDetail(id), dataToSend);
                 alert("Sanción actualizada con éxito!");
             } else {
-                response = await axios.post('http://127.0.0.1:8000/api/sanciones/', dataToSend);
+                response = await axios.post(API_ENDPOINTS.sanciones, dataToSend);
                 alert("Sanción creada con éxito!");
             }
             console.log("Respuesta del servidor:", response.data);
