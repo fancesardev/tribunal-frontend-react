@@ -13,6 +13,7 @@ import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Alert from '@mui/material/Alert';
+import { API_ENDPOINTS } from '../config/api';
 
 function ResolucionList() {
   const [resoluciones, setResoluciones] = useState([]);
@@ -22,7 +23,7 @@ function ResolucionList() {
   useEffect(() => {
     const fetchResoluciones = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/api/resoluciones/');
+        const response = await axios.get("http://127.0.0.1:8000/api/resoluciones/");;
         setResoluciones(response.data);
         setLoading(false);
       } catch (err) {

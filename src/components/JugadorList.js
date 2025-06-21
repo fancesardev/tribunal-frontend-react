@@ -27,6 +27,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
+import { API_ENDPOINTS } from '../config/api';
 
 function JugadorList() {
     const [jugadores, setJugadores] = useState([]);
@@ -41,7 +42,8 @@ function JugadorList() {
         try {
             // Utilizamos el endpoint de jugadores, que gracias al JugadorSerializer
             // ya incluye equipo_nombre y categoria del jugador.
-            const response = await axios.get('http://localhost:8000/api/jugadores/');
+            // En JugadorList.js
+            const response = await axios.get("http://127.0.0.1:8000/api/jugadores/");
             setJugadores(response.data);
             setLoading(false);
         } catch (err) {

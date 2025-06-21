@@ -23,7 +23,7 @@ function ResolucionForm() {
     setSuccess(false);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/resoluciones/', {
+      const response = await axios.get("http://127.0.0.1:8000/api/resoluciones/"); {
         fecha,      // Envía la fecha
         descripcion // Envía la descripción
       });

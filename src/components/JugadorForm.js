@@ -15,6 +15,7 @@ import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
 import { Grid } from '@mui/material'; // Asegúrate de que esta importación esté presente
+import { API_ENDPOINTS } from '../config/api';
 
 function JugadorForm() {
     const { id } = useParams();
@@ -46,7 +47,7 @@ function JugadorForm() {
                 setEquipos(equiposRes.data);
 
                 if (id) {
-                    const jugadorRes = await axios.get(`http://localhost:8000/api/jugadores/${id}/`);
+                    const jugadorRes = await axios.get("http://127.0.0.1:8000/api/jugadores/");
                     const jugadorData = jugadorRes.data;
                     setNombre(jugadorData.nombre);
                     setApellido(jugadorData.apellido);
