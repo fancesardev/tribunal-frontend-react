@@ -56,6 +56,7 @@ function App() {
                 <Route path="/jugadores/edit/:id" element={<JugadorForm />} />
                 <Route path="/resoluciones" element={<ResolucionList />} />
                 <Route path="/resoluciones/nuevo" element={<ResolucionForm />} />
+                <Route path="/resoluciones/edit/:id" element={<ResolucionForm />} /> {/* Nueva ruta para edición */}
                 <Route path="/equipos/nuevo" element={<EquipoForm />} />
               </Routes>
             </Container>

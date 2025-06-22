@@ -27,7 +27,7 @@ import {
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { API_ENDPOINTS } from '../config/api';
+import { API_ENDPOINTS } from '../config/api'; // Importación correcta
 
 function JugadorList() {
     const [jugadores, setJugadores] = useState([]);
@@ -40,22 +40,20 @@ function JugadorList() {
 
     const fetchJugadores = async () => {
         try {
-            // Utilizamos el endpoint de jugadores, que gracias al JugadorSerializer
-            // ya incluye equipo_nombre y categoria del jugador.
-            // En JugadorList.js
-            const response = await axios.get("http://127.0.0.1:8000/api/jugadores/");
+            // CAMBIO AQUÍ: Usar API_ENDPOINTS.jugadores
+            const response = await axios.get(API_ENDPOINTS.jugadores);
             setJugadores(response.data);
             setLoading(false);
         } catch (err) {
             console.error("Error al cargar jugadores:", err);
-            setError("Error al cargar los jugadores.");
+            setError("Error al cargar los jugadores. " + (err.response?.data?.detail || err.message)); // Mejorar el mensaje de error
             setLoading(false);
         }
     };
 
     useEffect(() => {
         fetchJugadores();
-    }, []);
+    }, []); // El array de dependencias vacío significa que se ejecuta una vez al montar el componente.
 
     const handleDeleteClick = (jugadorId) => {
         setJugadorToDelete(jugadorId);
@@ -66,13 +64,14 @@ function JugadorList() {
         setOpenDialog(false);
         if (jugadorToDelete) {
             try {
-                await axios.delete(`http://localhost:8000/api/jugadores/${jugadorToDelete}/`);
+                // CAMBIO AQUÍ: Usar API_ENDPOINTS.jugadoresDetail(id) para DELETE
+                await axios.delete(API_ENDPOINTS.jugadoresDetail(jugadorToDelete));
                 // Actualizar la lista de jugadores después de borrar
                 setJugadores(jugadores.filter(j => j.id_jugador !== jugadorToDelete));
                 setJugadorToDelete(null);
             } catch (err) {
                 console.error("Error al borrar jugador:", err);
-                setError("Error al borrar el jugador.");
+                setError("Error al borrar el jugador. " + (err.response?.data?.detail || err.message)); // Mejorar el mensaje de error
             }
         }
     };
@@ -88,9 +87,9 @@ function JugadorList() {
 
     if (loading) {
         return (
-            <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center' }}>
+            <Container sx={{ mt: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', flexDirection: 'column' }}>
                 <CircularProgress />
-                <Typography variant="h6" sx={{ ml: 2 }}>Cargando jugadores...</Typography>
+                <Typography variant="h6" sx={{ mt: 2 }}>Cargando jugadores...</Typography>
             </Container>
         );
     }
@@ -124,14 +123,14 @@ function JugadorList() {
                     <TableHead>
                         <TableRow>
                             <TableCell>ID Jugador</TableCell>
-                            <TableCell>Cód. Socio</TableCell> {/* Cambiado a Cód. Socio */}
+                            <TableCell>Cód. Socio</TableCell>
                             <TableCell>Apellido</TableCell>
                             <TableCell>Nombre</TableCell>
                             <TableCell>DNI</TableCell>
                             <TableCell>Fecha Nac.</TableCell>
-                            <TableCell>Categoría</TableCell> {/* Añadida Categoría del Jugador */}
-                            <TableCell>Equipo</TableCell> {/* Ahora mostrará el nombre del equipo */}
-                            <TableCell align="center">Acciones</TableCell> {/* Columna para botones de acción */}
+                            <TableCell>Categoría</TableCell>
+                            <TableCell>Equipo</TableCell>
+                            <TableCell align="center">Acciones</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -148,13 +147,13 @@ function JugadorList() {
                                     <TableCell component="th" scope="row">
                                         {jugador.id_jugador}
                                     </TableCell>
-                                    <TableCell>{jugador.codigo_socio || 'N/A'}</TableCell> {/* Usar codigo_socio */}
+                                    <TableCell>{jugador.codigo_socio || 'N/A'}</TableCell>
                                     <TableCell>{jugador.apellido}</TableCell>
                                     <TableCell>{jugador.nombre}</TableCell>
                                     <TableCell>{jugador.dni || 'N/A'}</TableCell>
                                     <TableCell>{jugador.fecha_nacimiento || 'N/A'}</TableCell>
-                                    <TableCell>{jugador.categoria || 'N/A'}</TableCell> {/* Mostrar categoría del jugador */}
-                                    <TableCell>{jugador.equipo_nombre || 'N/A'}</TableCell> {/* Usar equipo_nombre */}
+                                    <TableCell>{jugador.categoria || 'N/A'}</TableCell>
+                                    <TableCell>{jugador.equipo_nombre || 'N/A'}</TableCell>
                                     <TableCell align="center">
                                         <Button
                                             variant="outlined"

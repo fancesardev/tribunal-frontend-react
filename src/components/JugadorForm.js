@@ -14,8 +14,8 @@ import FormControl from '@mui/material/FormControl';
 import Box from '@mui/material/Box';
 import Alert from '@mui/material/Alert';
 import Typography from '@mui/material/Typography';
-import { Grid } from '@mui/material'; // Asegúrate de que esta importación esté presente
-import { API_ENDPOINTS } from '../config/api';
+import { Grid } from '@mui/material';
+import { API_ENDPOINTS } from '../config/api'; // Importación correcta
 
 function JugadorForm() {
     const { id } = useParams();
@@ -43,11 +43,13 @@ function JugadorForm() {
     useEffect(() => {
         const fetchInitialData = async () => {
             try {
-                const equiposRes = await axios.get('http://localhost:8000/api/equipos/');
+                // CAMBIO AQUÍ: Usar API_ENDPOINTS.equipos
+                const equiposRes = await axios.get(API_ENDPOINTS.equipos);
                 setEquipos(equiposRes.data);
 
                 if (id) {
-                    const jugadorRes = await axios.get("http://127.0.0.1:8000/api/jugadores/");
+                    // CAMBIO AQUÍ: Usar API_ENDPOINTS.jugadoresDetail(id)
+                    const jugadorRes = await axios.get(API_ENDPOINTS.jugadoresDetail(id));
                     const jugadorData = jugadorRes.data;
                     setNombre(jugadorData.nombre);
                     setApellido(jugadorData.apellido);
@@ -64,19 +66,19 @@ function JugadorForm() {
                 setLoadingData(false);
             } catch (err) {
                 console.error("Error al cargar datos iniciales o del jugador:", err);
-                setError({ detail: "Error al cargar equipos o datos del jugador. Asegúrate de tener datos de equipos." });
+                setError(err.response ? err.response.data : { detail: "Error al cargar equipos o datos del jugador. Asegúrate de tener datos de equipos." });
                 setLoadingData(false);
             }
         };
         fetchInitialData();
-    }, [id]);
+    }, [id]); // Asegúrate de que [id] es la única dependencia si no hay otras necesarias para evitar bucles.
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError(null);
         setSuccess(false);
 
-        if (equipos.length === 0 && !id) { // Solo si estamos creando y no hay equipos
+        if (equipos.length === 0 && !id) {
             setError({ detail: "Asegúrate de tener al menos un equipo antes de añadir un jugador." });
             return;
         }
@@ -94,13 +96,16 @@ function JugadorForm() {
         try {
             let response;
             if (id) {
-                response = await axios.patch(`http://localhost:8000/api/jugadores/${id}/`, playerData);
+                // CAMBIO AQUÍ: Usar API_ENDPOINTS.jugadoresDetail(id) para PATCH
+                response = await axios.patch(API_ENDPOINTS.jugadoresDetail(id), playerData);
                 console.log('Jugador actualizado:', response.data);
                 setSuccess(true);
             } else {
-                response = await axios.post('http://localhost:8000/api/jugadores/', playerData);
+                // CAMBIO AQUÍ: Usar API_ENDPOINTS.jugadores para POST
+                response = await axios.post(API_ENDPOINTS.jugadores, playerData);
                 console.log('Jugador creado:', response.data);
                 setSuccess(true);
+                // Limpiar campos del formulario después de una creación exitosa
                 setNombre('');
                 setApellido('');
                 setCodigoSocio('');
@@ -123,20 +128,16 @@ function JugadorForm() {
         return <Typography>Cargando datos para el formulario de jugadores...</Typography>;
     }
 
-    // La lógica de formDisabled ya la habíamos ajustado para permitir la edición.
-    // formDisabled = equipos.length === 0 && !id;
-    // Esto se mantiene, pero si no hay equipos y estamos editando, igual se permite el formulario.
     const formDisabled = equipos.length === 0 && !id;
 
-
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 800, mx: 'auto', p: 2 }}> {/* Aumentar maxWidth para acomodar las columnas */}
+        <Box component="form" onSubmit={handleSubmit} sx={{ maxWidth: 800, mx: 'auto', p: 2 }}>
             <Typography variant="h4" component="h2" gutterBottom sx={{ mb: 4 }}>
                 {id ? 'Editar Jugador' : 'Añadir Nuevo Jugador'}
             </Typography>
 
-            <Grid container spacing={3}> {/* Usar Grid container con espaciado */}
-                <Grid item xs={12} sm={6}> {/* Nombre: ocupa 12 columnas en móviles, 6 en pantallas medianas */}
+            <Grid container spacing={3}>
+                <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
                         id="nombre"
@@ -147,7 +148,7 @@ function JugadorForm() {
                         disabled={formDisabled}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}> {/* Apellido: ocupa 12 columnas en móviles, 6 en pantallas medianas */}
+                <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
                         id="apellido"
@@ -159,7 +160,7 @@ function JugadorForm() {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}> {/* Código de Socio */}
+                <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
                         id="codigoSocio"
@@ -170,7 +171,7 @@ function JugadorForm() {
                         disabled={formDisabled}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}> {/* DNI */}
+                <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
                         id="dni"
@@ -181,7 +182,7 @@ function JugadorForm() {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}> {/* Fecha de Nacimiento */}
+                <Grid item xs={12} sm={6}>
                     <TextField
                         fullWidth
                         type="date"
@@ -194,7 +195,7 @@ function JugadorForm() {
                     />
                 </Grid>
 
-                <Grid item xs={12} sm={6}> {/* Categoría del Jugador */}
+                <Grid item xs={12} sm={6}>
                     <FormControl fullWidth required disabled={formDisabled}>
                         <InputLabel id="categoria-label">Categoría del Jugador</InputLabel>
                         <Select
@@ -213,7 +214,7 @@ function JugadorForm() {
                     </FormControl>
                 </Grid>
 
-                <Grid item xs={12}> {/* Equipo: ocupa todo el ancho para una mejor visualización */}
+                <Grid item xs={12}>
                     {equipos.length > 0 ? (
                         <FormControl fullWidth required disabled={formDisabled}>
                             <InputLabel id="equipo-label">Equipo</InputLabel>
@@ -236,7 +237,7 @@ function JugadorForm() {
                     )}
                 </Grid>
 
-                <Grid item xs={12}> {/* Botones: ocupa todo el ancho */}
+                <Grid item xs={12}>
                     <Button
                         type="submit"
                         variant="contained"
