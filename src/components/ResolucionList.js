@@ -23,11 +23,12 @@ function ResolucionList() {
   useEffect(() => {
     const fetchResoluciones = async () => {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/resoluciones/");
+        const response = await axios.get(API_ENDPOINTS.resoluciones);
         setResoluciones(response.data);
         setLoading(false);
       } catch (err) {
-        setError(err);
+        console.error("Error al cargar resoluciones:", err);
+        setError("Error al cargar las resoluciones: " + (err.response?.data?.detail || err.message || "Error desconocido"));
         setLoading(false);
       }
     };
